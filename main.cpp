@@ -8,7 +8,7 @@ int main() {
     ifstream file;
     string path = "..\\data\\league1.csv";
     file.open(path);
-    getline(file, line);
-    cout << line;
-    return 0;
+    while (getline(file, line)){
+        cout << line << endl;
+    }
 }
