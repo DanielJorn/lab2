@@ -82,6 +82,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="E:/_Programming/projects/lab2/lib.cpp">
+			<Option target="lab2"/>
+		</Unit>
+		<Unit filename="E:/_Programming/projects/lab2/lib.h">
+			<Option target="lab2"/>
+		</Unit>
 		<Unit filename="E:/_Programming/projects/lab2/main.cpp">
 			<Option target="lab2"/>
 		</Unit>

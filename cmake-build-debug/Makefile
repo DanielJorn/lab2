@@ -122,6 +122,33 @@ lab2/fast:
 	$(MAKE) -f CMakeFiles\lab2.dir\build.make CMakeFiles/lab2.dir/build
 .PHONY : lab2/fast
 
+lib.obj: lib.cpp.obj
+
+.PHONY : lib.obj
+
+# target to build an object file
+lib.cpp.obj:
+	$(MAKE) -f CMakeFiles\lab2.dir\build.make CMakeFiles/lab2.dir/lib.cpp.obj
+.PHONY : lib.cpp.obj
+
+lib.i: lib.cpp.i
+
+.PHONY : lib.i
+
+# target to preprocess a source file
+lib.cpp.i:
+	$(MAKE) -f CMakeFiles\lab2.dir\build.make CMakeFiles/lab2.dir/lib.cpp.i
+.PHONY : lib.cpp.i
+
+lib.s: lib.cpp.s
+
+.PHONY : lib.s
+
+# target to generate assembly for a file
+lib.cpp.s:
+	$(MAKE) -f CMakeFiles\lab2.dir\build.make CMakeFiles/lab2.dir/lib.cpp.s
+.PHONY : lib.cpp.s
+
 main.obj: main.cpp.obj
 
 .PHONY : main.obj
@@ -158,6 +185,9 @@ help:
 	@echo ... lab2
 	@echo ... edit_cache
 	@echo ... rebuild_cache
+	@echo ... lib.obj
+	@echo ... lib.i
+	@echo ... lib.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

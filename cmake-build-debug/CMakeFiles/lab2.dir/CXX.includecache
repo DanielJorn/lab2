@@ -6,6 +6,10 @@
 
 #IncludeRegexTransform: 
 
+E:/_Programming/projects/lab2/lib.h
+iostream
+-
+
 E:/_Programming/projects/lab2/main.cpp
 iostream
 -
@@ -13,4 +17,6 @@ fstream
 -
 filesystem
 -
+lib.h
+E:/_Programming/projects/lab2/lib.h
 
