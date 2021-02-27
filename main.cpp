@@ -23,9 +23,12 @@ int main() {
 
         int teamsCount = getTeamCount(stringFilePath);
 
+        // skip the first line
+        getline(currentFile, currentLine);
         for (int i = 0; i < teamsCount; ++i) {
             getline(currentFile, currentLine);
             cout << currentLine << endl;
         }
+        cout << endl;
     }
 }
