@@ -1,0 +1,4 @@
+ToolSet: w64 8.0 (local)@E:\_Programming\CLion 2020.1\compil\mingw64
+Options: 
+
+Options:
