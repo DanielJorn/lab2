@@ -6,6 +6,12 @@
 using namespace std;
 namespace fs = std::filesystem;
 
+enum MATCH_RESULT {
+    WIN,
+    LOSE,
+    DRAW
+};
+
 int main() {
     const string csv_delimiter = ",";
     const string scoreDelimiter = ":";
@@ -48,8 +54,19 @@ int main() {
                 int opponentScoreEndInd    = matchResultString.size();
                 string opponentScoreString = string(matchResultString, opponentScoreStartInd, opponentScoreEndInd - opponentScoreStartInd);
 
-                cout << "team: " << teamScoreString << endl;
-                cout << "oppo: " << opponentScoreString << endl;
+                int teamScoreInt = stoi(teamScoreString);
+                int opponentScoreInt = stoi(opponentScoreString);
+
+                MATCH_RESULT result;
+                if (teamScoreInt > opponentScoreInt){
+                    result = WIN;
+                } else if (teamScoreInt < opponentScoreInt) {
+                    result = LOSE;
+                } else {
+                    result = DRAW;
+                }
+
+                cout << teamScoreInt << ":" << opponentScoreInt << " " << result << endl;
 
                 matchResultStartInd = matchResultEndInd + 1;
             }
