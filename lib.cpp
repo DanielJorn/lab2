@@ -18,8 +18,16 @@ enum MATCH_RESULT {
 void process_entry(const filesystem::directory_entry &entry);
 bool is_csv(const fs::directory_entry &entry);
 int getTeamCount(const string &path);
-void process_teamResult(const string &teamLine);
+
+/** Takes a string with team info as a parameter.
+    Returns the team's final score.
+*/
+int process_teamResult(const string &teamLine);
 string getTeamName(const string &teamLine);
+
+/** Takes a string with result of a match as a parameter.
+    Returns the points the team got for the match.
+*/
 int process_matchResult(const string &matchString);
 int teamMatchScore(const string &matchString);
 int opponentMatchScore(const string &matchString);
@@ -76,7 +84,7 @@ int getTeamCount(const string &path) {
     return intCount;
 }
 
-void process_teamResult(const string &teamLine) {
+int process_teamResult(const string &teamLine) {
     string teamName = getTeamName(teamLine);
     cout << teamName << endl;
 
@@ -93,6 +101,8 @@ void process_teamResult(const string &teamLine) {
     }
     cout << finalTeamScore << endl;
     cout << endl;
+
+    return finalTeamScore;
 }
 
 string getTeamName(const string &teamLine) {
