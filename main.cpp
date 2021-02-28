@@ -39,8 +39,10 @@ int main() {
             int teamNameEndInd = currentLine.find_first_of(csv_delimiter);
             string teamName = string(currentLine, 0, teamNameEndInd);
 
-            int teamScore = 0;
+            int finalTeamScore = 0;
             int matchResultStartInd = teamNameEndInd + 1;
+
+            cout << teamName << endl;
 
             for (int matchInd = 0; matchInd < matchesInLeague; ++matchInd) {
                 int matchResultEndInd = currentLine.find_first_of(csv_delimiter, matchResultStartInd);
@@ -66,10 +68,16 @@ int main() {
                     result = DRAW;
                 }
 
-                cout << teamScoreInt << ":" << opponentScoreInt << " " << result << endl;
+                if (result == WIN) {
+                    finalTeamScore += 3;
+                } else if (result == DRAW){
+                    finalTeamScore += 1;
+                }
 
+                cout << teamScoreInt << ":" << opponentScoreInt << " " << result << endl;
                 matchResultStartInd = matchResultEndInd + 1;
             }
+            cout << finalTeamScore << endl;
             cout << endl;
         }
         cout << endl;

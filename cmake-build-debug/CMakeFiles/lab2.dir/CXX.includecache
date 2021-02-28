@@ -6,6 +6,12 @@
 
 #IncludeRegexTransform: 
 
+E:/_Programming/projects/lab2/lib.cpp
+iostream
+-
+fstream
+-
+
 E:/_Programming/projects/lab2/lib.h
 iostream
 -
