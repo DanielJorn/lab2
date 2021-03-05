@@ -10,7 +10,8 @@ const string csv_delimiter = ",";
 const string scoreDelimiter = ":";
 const int matchesInLeague = 10;
 
-void process_entry(const filesystem::directory_entry& entry);
+void process_entry(const filesystem::directory_entry& entry, vector<string>& leagueTable);
+void outputTable(vector<string>& leagueTable);
 bool is_csv(const fs::directory_entry& entry);
 int getTeamCount(const string& path);
 
@@ -19,7 +20,7 @@ int getTeamCount(const string& path);
 */
 int process_teamResult(const string& teamLine, vector<string>& leagueTable);
 string getTeamName(const string& teamLine);
-void outputTable(vector<string>& leagueTable, int teamsCount);
+void outputTable(vector<string>& leagueTable);
 
 /** Takes a string with result of a match as a parameter.
     Returns the points the team got for the match.
@@ -39,7 +40,7 @@ string requestDirectoryPath() {
     return pathToDir;
 }
 
-void process_entry(const fs::directory_entry& entry) {
+void process_entry(const fs::directory_entry& entry, vector<string> & leagueTable) {
     if (!is_csv(entry)) return;
 
     string currentLine;
@@ -49,7 +50,6 @@ void process_entry(const fs::directory_entry& entry) {
 
     currentFile.open(filePath);
     int teamsCount = getTeamCount(filePath);
-    vector<string> leagueTable;
 
     // skip the first line
     getline(currentFile, currentLine);
@@ -61,13 +61,13 @@ void process_entry(const fs::directory_entry& entry) {
         process_teamResult(teamLine, leagueTable);
     }
     
-    outputTable(leagueTable, teamsCount);
+    
 }
 
-void outputTable(vector<string>& leagueTable, int teamsCount)
+void outputTable(vector<string>& leagueTable)
 {
     cout << endl;
-    for (int i = 0; i < teamsCount; i++)
+    for (int i = 0; i < leagueTable.size(); i++)
         cout << leagueTable[i] << endl;
 }
 

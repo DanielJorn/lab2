@@ -8,4 +8,5 @@ namespace fs = std::filesystem;
 string requestDirectoryPath();
 
 /* Processes the given entry following the lab task */
-void process_entry(const fs::directory_entry &entry);
+void process_entry(const fs::directory_entry &entry, vector<string>& leagueTable);
+void outputTable(vector<string>& leagueTable);
