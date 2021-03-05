@@ -17,8 +17,9 @@ int getTeamCount(const string& path);
 /** Takes a string with team info as a parameter.
     Returns the team's final score.
 */
-int process_teamResult(const string& teamLine);
+int process_teamResult(const string& teamLine, vector<string>& leagueTable);
 string getTeamName(const string& teamLine);
+void outputTable(vector<string>& leagueTable, int teamsCount);
 
 /** Takes a string with result of a match as a parameter.
     Returns the points the team got for the match.
@@ -44,9 +45,11 @@ void process_entry(const fs::directory_entry& entry) {
     string currentLine;
     ifstream currentFile;
     string filePath = entry.path().string();
+    
 
     currentFile.open(filePath);
     int teamsCount = getTeamCount(filePath);
+    vector<string> leagueTable;
 
     // skip the first line
     getline(currentFile, currentLine);
@@ -55,9 +58,17 @@ void process_entry(const fs::directory_entry& entry) {
         string teamLine;
         getline(currentFile, teamLine);
 
-        process_teamResult(teamLine);
+        process_teamResult(teamLine, leagueTable);
     }
+    
+    outputTable(leagueTable, teamsCount);
+}
+
+void outputTable(vector<string>& leagueTable, int teamsCount)
+{
     cout << endl;
+    for (int i = 0; i < teamsCount; i++)
+        cout << leagueTable[i] << endl;
 }
 
 bool is_csv(const fs::directory_entry& entry) {
@@ -79,9 +90,9 @@ int getTeamCount(const string& path) {
     return intCount;
 }
 
-int process_teamResult(const string& teamLine) {
+int process_teamResult(const string& teamLine, vector<string> &leagueTable) {
     string teamName = getTeamName(teamLine);
-    cout << teamName << endl;
+    string currentLine = teamName;
 
     int matchResultStartInd = teamName.size() + 1;
 
@@ -94,8 +105,8 @@ int process_teamResult(const string& teamLine) {
 
         matchResultStartInd = matchResultEndInd + 1;
     }
-    cout << finalTeamScore << endl;
-    cout << endl;
+    currentLine += " " + to_string(finalTeamScore);
+    leagueTable.push_back(currentLine);
 
     return finalTeamScore;
 }
@@ -112,7 +123,7 @@ int process_matchResult(const string& matchString) {
 
     string result = getMatchResult(teamScore, opponentScore);
     int pointsGot = getPoints(result);
-    cout << teamScore << ":" << opponentScore << " " << result << endl;
+    //cout << teamScore << ":" << opponentScore << " " << result << endl;
 
     return pointsGot;
 }
