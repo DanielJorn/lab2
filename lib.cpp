@@ -12,6 +12,7 @@ const int matchesInLeague = 10;
 
 void process_entry(const filesystem::directory_entry& entry, vector<string>& leagueTable);
 void outputTable(vector<string>& leagueTable);
+void sortTable(vector<string>& leagueTable);
 bool is_csv(const fs::directory_entry& entry);
 int getTeamCount(const string& path);
 
@@ -69,6 +70,21 @@ void outputTable(vector<string>& leagueTable)
     cout << endl;
     for (int i = 0; i < leagueTable.size(); i++)
         cout << leagueTable[i] << endl;
+}
+
+void sortTable(vector<string>& leagueTable)
+{
+    for (int i = 0; i < leagueTable.size() - 1; i++) {
+        for (int j = 0; j < leagueTable.size() - i - 1; j++) {
+            int teamPoints = stoi(leagueTable[j].substr(leagueTable[j].rfind(" ") + 1, leagueTable[j].length() - leagueTable[j].rfind(" ") - 1));
+            int nextTeamPoints = stoi(leagueTable[j + 1].substr(leagueTable[j + 1].rfind(" ") + 1, leagueTable[j + 1].length() - leagueTable[j + 1].rfind(" ") - 1));
+            if (teamPoints < nextTeamPoints) {
+                string temp = leagueTable[j];
+                leagueTable[j] = leagueTable[j + 1];
+                leagueTable[j + 1] = temp;
+            }
+        }
+    }
 }
 
 bool is_csv(const fs::directory_entry& entry) {

@@ -13,4 +13,6 @@ int main() {
         process_entry(entry, leagueTable);
     }
     outputTable(leagueTable);
+    sortTable(leagueTable);
+    outputTable(leagueTable);
 }
