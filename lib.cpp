@@ -21,7 +21,8 @@ int getTeamCount(const string& path);
 */
 int process_teamResult(const string& teamLine, vector<string>& leagueTable);
 string getTeamName(const string& teamLine);
-void outputTable(vector<string>& leagueTable);
+void outputFile(vector<string>& leagueTable);
+int extractPoints(string& currentLine);
 
 /** Takes a string with result of a match as a parameter.
     Returns the points the team got for the match.
@@ -29,8 +30,8 @@ void outputTable(vector<string>& leagueTable);
 int process_matchResult(const string& matchString);
 int teamMatchScore(const string& matchString);
 int opponentMatchScore(const string& matchString);
-string getMatchResult(int teamScore, int opponentScore);
-int getPoints(string result);
+int getMatchResult(int teamScore, int opponentScore);
+
 
 string requestDirectoryPath() {
     string dirName;
@@ -62,22 +63,25 @@ void process_entry(const fs::directory_entry& entry, vector<string> & leagueTabl
         process_teamResult(teamLine, leagueTable);
     }
     
-    
 }
 
-void outputTable(vector<string>& leagueTable)
-{
-    cout << endl;
-    for (int i = 0; i < leagueTable.size(); i++)
-        cout << leagueTable[i] << endl;
+void outputFile(vector<string>& leagueTable) {
+    ofstream outFile("results.csv");
+    if (!outFile) {
+        cout << "Cannot open file" << endl;
+    }
+    for (int i = 0; i < leagueTable.size(); i++) {
+        outFile << leagueTable[i] << endl;
+    }
+    outFile.close();
 }
 
 void sortTable(vector<string>& leagueTable)
 {
     for (int i = 0; i < leagueTable.size() - 1; i++) {
         for (int j = 0; j < leagueTable.size() - i - 1; j++) {
-            int teamPoints = stoi(leagueTable[j].substr(leagueTable[j].rfind(" ") + 1, leagueTable[j].length() - leagueTable[j].rfind(" ") - 1));
-            int nextTeamPoints = stoi(leagueTable[j + 1].substr(leagueTable[j + 1].rfind(" ") + 1, leagueTable[j + 1].length() - leagueTable[j + 1].rfind(" ") - 1));
+            int teamPoints = extractPoints(leagueTable[j]);
+            int nextTeamPoints = extractPoints(leagueTable[j + 1]);
             if (teamPoints < nextTeamPoints) {
                 string temp = leagueTable[j];
                 leagueTable[j] = leagueTable[j + 1];
@@ -85,6 +89,13 @@ void sortTable(vector<string>& leagueTable)
             }
         }
     }
+}
+
+int extractPoints(string& currentLine) {
+    int positionOfDelimiter = currentLine.find(csv_delimiter);
+    string stringTeamPoints = currentLine.substr(positionOfDelimiter + 1, currentLine.length() - positionOfDelimiter - 1);
+    int teamPoints = stoi(stringTeamPoints);
+    return teamPoints;
 }
 
 bool is_csv(const fs::directory_entry& entry) {
@@ -121,7 +132,7 @@ int process_teamResult(const string& teamLine, vector<string> &leagueTable) {
 
         matchResultStartInd = matchResultEndInd + 1;
     }
-    currentLine += " " + to_string(finalTeamScore);
+    currentLine += csv_delimiter + to_string(finalTeamScore);
     leagueTable.push_back(currentLine);
 
     return finalTeamScore;
@@ -137,11 +148,9 @@ int process_matchResult(const string& matchString) {
     int teamScore = teamMatchScore(matchString);
     int opponentScore = opponentMatchScore(matchString);
 
-    string result = getMatchResult(teamScore, opponentScore);
-    int pointsGot = getPoints(result);
-    //cout << teamScore << ":" << opponentScore << " " << result << endl;
+    int result = getMatchResult(teamScore, opponentScore);
 
-    return pointsGot;
+    return result;
 }
 
 int teamMatchScore(const string& matchString) {
@@ -163,30 +172,19 @@ int opponentMatchScore(const string& matchString) {
     return scoreInt;
 }
 
-string getMatchResult(int teamScore, int opponentScore) {
-    string result = "LOSE";
+int getMatchResult(int teamScore, int opponentScore) {
+    int result = 0;
     if (teamScore > opponentScore) {
-        result = "WIN";
+        result = 3;
     }
     else if (teamScore < opponentScore) {
-        result = "LOSE";
+        result = 0;
     }
     else {
-        result = "DRAW";
+        result = 1;
     }
 
     return result;
 }
 
-int getPoints(string result) {
-    int points = 0;
-    if (result == "WIN") {
-        points = 3;
-    }
-    else if (result == "DRAW") {
-        points = 1;
-    }
-
-    return points;
-}
 
