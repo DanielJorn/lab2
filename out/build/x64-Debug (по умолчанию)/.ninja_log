@@ -1,0 +1,6 @@
+# ninja log v5
+8	1373	636859173	CMakeFiles/lab2.dir/main.cpp.obj	cfb64e5fd5a385fa
+1	1410	636859173	CMakeFiles/lab2.dir/lib.cpp.obj	fbadfa0819079221
+1412	2088	636859174	lab2.exe	8fb8bb25e424d0d6
+1	1645	636863233	CMakeFiles/lab2.dir/lib.cpp.obj	fbadfa0819079221
+1665	2072	636863234	lab2.exe	8fb8bb25e424d0d6

@@ -11,10 +11,10 @@ int main() {
     cout << "Please enter a folder name: ";
     string directoryPath = requestDirectoryPath();
     vector<string> leagueTable;
-    for (const auto &entry: fs::directory_iterator(directoryPath)) {
+    for (const auto& entry : fs::directory_iterator(directoryPath)) {
         process_entry(entry, leagueTable);
     }
     sortTable(leagueTable);
-    
+
     outputFile(leagueTable);
 }

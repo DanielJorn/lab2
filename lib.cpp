@@ -11,7 +11,6 @@ const string scoreDelimiter = ":";
 const int matchesInLeague = 10;
 
 void process_entry(const filesystem::directory_entry& entry, vector<string>& leagueTable);
-void outputTable(vector<string>& leagueTable);
 void sortTable(vector<string>& leagueTable);
 bool is_csv(const fs::directory_entry& entry);
 int getTeamCount(const string& path);
@@ -42,13 +41,13 @@ string requestDirectoryPath() {
     return pathToDir;
 }
 
-void process_entry(const fs::directory_entry& entry, vector<string> & leagueTable) {
+void process_entry(const fs::directory_entry& entry, vector<string>& leagueTable) {
     if (!is_csv(entry)) return;
 
     string currentLine;
     ifstream currentFile;
     string filePath = entry.path().string();
-    
+
 
     currentFile.open(filePath);
     int teamsCount = getTeamCount(filePath);
@@ -62,7 +61,7 @@ void process_entry(const fs::directory_entry& entry, vector<string> & leagueTabl
 
         process_teamResult(teamLine, leagueTable);
     }
-    
+
 }
 
 void outputFile(vector<string>& leagueTable) {
@@ -92,7 +91,7 @@ void sortTable(vector<string>& leagueTable)
 }
 
 int extractPoints(string& currentLine) {
-    int positionOfDelimiter = currentLine.find(csv_delimiter);
+    int positionOfDelimiter = currentLine.find_last_of(csv_delimiter);
     string stringTeamPoints = currentLine.substr(positionOfDelimiter + 1, currentLine.length() - positionOfDelimiter - 1);
     int teamPoints = stoi(stringTeamPoints);
     return teamPoints;
@@ -117,11 +116,17 @@ int getTeamCount(const string& path) {
     return intCount;
 }
 
-int process_teamResult(const string& teamLine, vector<string> &leagueTable) {
+int process_teamResult(const string& teamLine, vector<string>& leagueTable) {
     string teamName = getTeamName(teamLine);
     string currentLine = teamName;
-
-    int matchResultStartInd = teamName.size() + 1;
+    int matchResultStartInd = teamName.size();
+    if (teamName.substr(0, 1) == "\"")
+    {
+        matchResultStartInd += 3;
+    }
+    else {
+        matchResultStartInd += 1;
+    }
 
     int finalTeamScore = 0;
     for (int matchInd = 0; matchInd < matchesInLeague; ++matchInd) {
@@ -139,8 +144,17 @@ int process_teamResult(const string& teamLine, vector<string> &leagueTable) {
 }
 
 string getTeamName(const string& teamLine) {
-    int teamNameEndInd = teamLine.find_first_of(csv_delimiter);
-    string teamName = string(teamLine, 0, teamNameEndInd);
+    string teamName;
+    int teamNameEndInd = 0;
+    if (teamLine.substr(0, 1) == "\"") {
+        teamNameEndInd = teamLine.find_last_of("\"");
+        teamName = string(teamLine, 0, teamNameEndInd + 1);
+        //cout << teamName << endl;
+    }
+    else {
+        teamNameEndInd = teamLine.find_first_of(csv_delimiter);
+        teamName = string(teamLine, 0, teamNameEndInd);
+    }
     return teamName;
 }
 
